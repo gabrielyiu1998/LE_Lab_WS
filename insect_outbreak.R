@@ -72,3 +72,32 @@ for (elem in 1:nrow(master)){
   self_comparison[nrow(self_comparison) + 1,] <- inp_vec
 }
 # self_comparison is the data frame described above
+
+#==== Counts year to year ====
+# The total column is the number of neighbours and
+# each entry under each year refers to the number of neighbours
+# that had an insect outbreak.
+neigh_counts <- data.frame(id = numeric(0), total = numeric(0),
+                           y2000 = numeric(0), y2001 = numeric(0),
+                           y2002 = numeric(0), y2003 = numeric(0),
+                           y2004 = numeric(0), y2005 = numeric(0), 
+                           y2006 = numeric(0), y2007 = numeric(0), 
+                           y2008 = numeric(0), y2009 = numeric(0), 
+                           y2010 = numeric(0), y2011 = numeric(0), 
+                           y2012 = numeric(0), y2013 = numeric(0))
+for (elem in 1:nrow(master)){
+  neigh <- dict[elem,]
+  neigh <- neigh[!is.na(neigh)]
+  inp_vec <- c(neigh[1], length(neigh) - 1)
+  for (yr in 5:18){
+    count <- 0
+    for (n in neigh[2:length(neigh)]){
+      count <- master[n + 1, yr] + count
+    }
+    inp_vec <- c(inp_vec, count)
+  }
+  neigh_counts[nrow(neigh_counts) + 1,] <- inp_vec
+}
+
+
+
